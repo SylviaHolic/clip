@@ -132,13 +132,12 @@ def rotate_image(image, boxes, angle):
     box = np.array(box).reshape(4, 2)
     #box_center = cv2.minAreaRect(box)[0]
     #box_repeat = np.repeat(box[:, :,np.newaxis], 3, axis=0)
-    #print 'box',box,'\n',box.shape
     #box_result = np.matrix(affine_mat) * np.matrix(box)
     rotated_box =[
      rotate_point(image_center,box[0],angle),
      rotate_point(image_center,box[1],angle),
      rotate_point(image_center,box[2],angle),
-        rotate_point(image_center,box[3],angle)]
+     rotate_point(image_center,box[3],angle)]
     
     x1 = rotated_box[0][0]+ new_w * 0.5 -image_w2
     x2 = rotated_box[1][0]+ new_w * 0.5 -image_w2
@@ -160,10 +159,9 @@ def perp( a ) :
   b[1] = a[0]
   return b
 
-# line segment a given by endpoints a1, a2
-# line segment b given by endpoints b1, b2
-# return 
+
 def seg_intersect(line1, line2) :
+  ## calculate the intersect point of two crossing lines
   da = line1[1] - line1[0]
   db = line2[1] - line2[0]
   dp = line1[0] - line2[0]
@@ -175,6 +173,7 @@ def seg_intersect(line1, line2) :
   return intersect
 
 def common_line(dot1,dot2,width,height):
+  ## check if two points are on the same boreder line of image
   if dot1[0]==dot2[0]:
     if (dot1[0]- 0)<1e-6 or (dot1[0]- width)<1e-6:
       return True
@@ -188,7 +187,7 @@ def line_length(dot1,dot2):
   return math.sqrt((dot1[0]-dot2[0])**2+ (dot1[1]-dot2[1])**2)
 
 def clockwise(poly_bad, poly_ori):
-  
+  ##make the points of intersect polygon in correct order under the reference of original polygon
   poly_good = np.zeros((4,2),dtype=np.int32)
   discard_indexs = []
   exist_indexs = []
